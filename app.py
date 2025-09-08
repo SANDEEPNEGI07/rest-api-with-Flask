@@ -1,5 +1,5 @@
 import os
-import secrets
+from dotenv import load_dotenv
 
 from flask import Flask, jsonify
 from flask_smorest import Api
@@ -7,7 +7,6 @@ from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 
 from db import db
-import models
 
 from blocklist import BLOCKLIST
 
@@ -36,7 +35,8 @@ def create_app(db_url=None):
     
     api = Api(app)
 
-    app.config["JWT_SECRET_KEY"] = "191957777050708331229131346586071295536"
+    load_dotenv()
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET")
     jwt = JWTManager(app)
 
     @jwt.token_in_blocklist_loader

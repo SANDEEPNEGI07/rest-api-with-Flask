@@ -7,3 +7,5 @@ flask-jwt-extended
 passlib
 flask-migrate
 gunicorn
+requests
+psycopg2-binary

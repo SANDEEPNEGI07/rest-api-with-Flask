@@ -44,3 +44,7 @@ class UserSchema(Schema):
     id = fields.Int(dump_only=True)
     username = fields.Str(required=True)
     password = fields.Str(required=True, load_only=True) #load_only means the user's password will not send to the client, Password can only be sent to db but not in response or should be saved to the logs or not sent over the network.
+
+
+class UserRegisterSchema(UserSchema):
+    email = fields.Str(required=True)

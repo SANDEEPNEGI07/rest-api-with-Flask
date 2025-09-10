@@ -9,3 +9,5 @@ flask-migrate
 gunicorn
 requests
 psycopg2-binary
+rq
+redis

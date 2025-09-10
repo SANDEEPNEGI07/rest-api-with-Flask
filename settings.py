@@ -1,3 +1,9 @@
+"""
+settings.py is a setup for rq worker so that we can run this file in render.com when deploy.
+In render.com background worker is not free.
+
+"""
+
 import os
 from dotenv import load_dotenv
 

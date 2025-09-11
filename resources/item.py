@@ -59,24 +59,7 @@ class ItemList(MethodView):
     @blp.arguments(ItemSchema)
     @blp.response(201, ItemSchema)
     def post(self, item_data):
-        # Get store by ID
-        store = StoreModel.query.get_or_404(item_data["store_id"])
-        # Get or create tags by names
-        tags = []
-        if "tag_names" in item_data:
-            for name in item_data["tag_names"]:
-                tag = TagModel.query.filter_by(name=name).first()
-                if not tag:
-                    tag = TagModel(name=name, store_id=store.id)
-                    db.session.add(tag)
-                    db.session.commit()
-                tags.append(tag)
-
-        # Remove used fields from item_data
-        item_data.pop("store_id")
-        item_data.pop("tag_names", None)
-
-        item = ItemModel(**item_data, store=store, tags=tags)
+        item = ItemModel(**item_data)
 
         try:
             db.session.add(item)

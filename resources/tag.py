@@ -4,7 +4,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from db import db
 from models import TagModel, StoreModel, ItemModel
-from schemas import TagSchema, TagAndItemSchema
+from schemas import TagSchema, TagAndItemSchema, PlainTagSchema
 
 
 blp = Blueprint("tags", __name__, description="operations on tags")
@@ -19,7 +19,7 @@ class TagInStore(MethodView):
 
         return store.tags.all()
     
-    @blp.arguments(TagSchema)
+    @blp.arguments(PlainTagSchema)
     @blp.response(200, TagSchema)
     def post(self, tag_data, store_id):
         tag_name = tag_data.get("name")

@@ -22,6 +22,13 @@ class TagInStore(MethodView):
     @blp.arguments(TagSchema)
     @blp.response(200, TagSchema)
     def post(self, tag_data, store_id):
+        tag_name = tag_data.get("name")
+        if TagModel.query.filter(
+            TagModel.store_id == store_id,
+            TagModel.name == tag_data["name"]
+        ).first():
+            abort(400, message="A tag with that name already exists in that store.")
+
         tag = TagModel(**tag_data, store_id=store_id)
 
         try:
@@ -49,7 +56,7 @@ class LinkTagsToItem(MethodView):
             db.session.add(item)
             db.session.commit()
         except SQLAlchemyError:
-            abort(500, message="An error occured")
+            abort(500, message="An error occured while inserting the tag.")
         
         return tag
     
@@ -94,3 +101,7 @@ class Tag(MethodView):
             db.session.commit()
 
             return {"message"," Tag deleted"}
+        abort(
+            400,
+            message="Could not delete tag. Make sure tag is not associated with any items, then try again.",  # noqa: E501
+        )
